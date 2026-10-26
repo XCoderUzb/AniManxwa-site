@@ -6,9 +6,9 @@ window.APP = {
   androidPackage: "com.animanxwa.app", // ilovaning applicationId'si (Android)
   // Yuklab olish havolalari. "" = hali yo'q.
   downloads: {
-    android: "https://t.me/KANAL/POST_ID", // hozir Telegram posti, keyin Play Market havolasi
+    android: "https://t.me/AniManxwaBot/app", // hozir Telegram posti, keyin Play Market havolasi
     ios: "",                               // App Store (keyin)
     windows: "",                           // Microsoft Store (keyin)
-    other: "https://t.me/KANAL"            // kompyuter va boshqa qurilmalar / yangiliklar kanali
+    other: "https://t.me/AniManxwaAppNews"            // kompyuter va boshqa qurilmalar / yangiliklar kanali
   }
 };
