@@ -6,10 +6,9 @@
   var win = /Windows/i.test(ua);
   var webview = /; wv\)|FBAN|FBAV|Instagram|Line\//i.test(ua); // ilova ichidagi brauzerlar
 
-  // /manhwa/123  |  /manhwa/123/456  |  /manhwa/123/chapter/456  |  ?manhwa=123&chapter=456
+  // ?manhwa=123&chapter=456  (404.html shu ko'rinishga o'tkazadi)
   var q = new URLSearchParams(location.search);
-  var m = location.pathname.match(/^\/manhwa\/(\d+)(?:\/(?:chapter\/)?(\d+))?\/?$/);
-  var id = m ? m[1] : q.get("manhwa"), ch = m ? m[2] : q.get("chapter");
+  var id = q.get("manhwa"), ch = q.get("chapter");
   id = /^\d+$/.test(id || "") ? id : null;
   ch = id && /^\d+$/.test(ch || "") ? ch : null;
   var path = id ? "manhwa/" + id + (ch ? "/" + ch : "") : "";
@@ -24,7 +23,7 @@
   $("sub").textContent = id ? (ch ? "Bob #" + ch + " ilovada ochiladi." : "Ilovada ochiladi.") : A.tagline;
   $("note").textContent = ios && !own ? "iPhone uchun versiya tez orada chiqadi. Yangiliklar kanaliga qo'shiling."
     : !android && !ios && !own ? "Ilova telefon uchun. Bu havolani telefoningizda oching." : "";
-  if (dl) { $("get").href = dl; if (ios && !own) $("get").textContent = "Yangiliklar kanaliga o'tish"; }
+  if (dl) { $("get").href = dl; if (!own) $("get").textContent = "Yangiliklar kanaliga o'tish"; }
   else $("get").hidden = true;
 
   function openApp(auto) {
