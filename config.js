@@ -5,7 +5,7 @@ window.APP = {
   scheme: "animanxwa",                 // ilova ichidagi havola: animanxwa://manhwa/123
   androidPackage: "com.animanxwa.app", // <-- ilovaning HAQIQIY applicationId'sini yozing
   downloads: {
-    android: "https://t.me/AniLinksBot/apk", // APK joylangan post (keyin Play Market havolasi)
+    android: "https://drive.google.com/file/d/10yUsbUNOkbSLqrV439rv-hKEp4iK74xk/view?usp=drivesdk", // APK joylangan post (keyin Play Market havolasi)
     ios: "",                                     // App Store (keyin)
     windows: "",                                 // Microsoft Store (keyin)
     other: "https://telegram.me/AniManxwaAppNews" // yangiliklar kanali (kompyuter va iPhone uchun)
