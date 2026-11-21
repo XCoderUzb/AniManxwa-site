@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101734">
+<title>AniManxwa · Google orqali kirish</title>
+<meta name="robots" content="noindex">
+<style>body{background:#101734;color:#f3f0ff}</style>
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+.code{font:800 34px/1.1 'Unbounded',system-ui,sans-serif;letter-spacing:.08em;margin:14px 0 6px;user-select:all}
+.err{color:#ff6b6b}
+.small{opacity:.75;font-size:13px;margin-top:14px}
+</style>
+</head>
+<body>
+<main class="panel">
+  <img id="logo" src="icon.png" alt="" width="64" height="64" onerror="this.remove()">
+  <p class="label">Google orqali kirish</p>
+  <h1 id="title">AniManxwa</h1>
+  <p id="sub">Google akkauntingiz bilan ilovaga kiring. Yoshingiz akkauntdan olinadi va 18+ asarlarni ko'rsatish uchun ishlatiladi.</p>
+  <button id="go" class="btn main" type="button">Google bilan davom etish</button>
+  <div id="done" hidden>
+    <p>Kirish tayyor ✓ Ilovaga qaytilmoqda...</p>
+    <div class="code" id="code"></div>
+    <a id="back" class="btn main" href="#">Ilovaga qaytish</a>
+    <p class="small">Ilova o'zi ochilmasa, shu kodni ilovadagi «Google orqali kirish» oynasiga kiriting (3 daqiqa amal qiladi).</p>
+  </div>
+  <p id="note" class="note"></p>
+  <p class="small"><a href="privacy.html" style="color:inherit">Maxfiylik siyosati</a></p>
+</main>
+<script src="config.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+(function () {
+  var A = window.APP, $ = function (i) { return document.getElementById(i); };
+  var n = new URLSearchParams(location.search).get("n") || "";
+  var note = function (t, bad) { $("note").textContent = t; $("note").className = "note" + (bad ? " err" : ""); };
+  if (!/^[\w-]{16,80}$/.test(n)) { $("go").hidden = true; return note("Bu sahifa faqat ilovadagi «Google orqali kirish» tugmasi orqali ochiladi.", 1); }
+  if (!A.api) { $("go").hidden = true; return note("Sozlanmagan: config.js ichida api manzili yo'q.", 1); }
+  if (/; wv\)|FBAN|FBAV|Instagram|Line\//i.test(navigator.userAgent)) note("Google ilova ichidagi brauzerda kirishga ruxsat bermaydi. Havolani Chrome yoki Edge'da oching.", 1);
+  $("go").onclick = function () {
+    if (!window.google || !google.accounts) return note("Google yuklanmadi. Internetni tekshirib, sahifani yangilang.", 1);
+    note("");
+    google.accounts.oauth2.initTokenClient({
+      client_id: A.gclient,
+      scope: "openid email profile https://www.googleapis.com/auth/user.birthday.read",
+      callback: function (r) {
+        if (!r || !r.access_token) return note("Google ruxsat bermadi: " + ((r && r.error) || "bekor qilindi"), 1);
+        $("go").disabled = true; note("Tekshirilmoqda...");
+        fetch(A.api.replace(/\/+$/, "") + "/api/auth/google", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: r.access_token, n: n }) })
+          .then(function (x) { return x.json().then(function (j) { if (!x.ok) throw Error(j.error || "Xato " + x.status); return j; }); })
+          .then(function (j) {
+            var link = A.scheme + "://login?code=" + j.code + "&n=" + encodeURIComponent(n);
+            $("go").hidden = true; $("sub").hidden = true; $("done").hidden = false; note("");
+            $("code").textContent = j.code.replace(/(.{4})(?=.)/g, "$1-"); $("back").href = link;
+            setTimeout(function () { location.href = link; }, 400);
+          })
+          .catch(function (e) { $("go").disabled = false; note(e.message === "Failed to fetch" ? "Serverga ulanib bo'lmadi. Server uxlab qolgan bo'lishi mumkin, 30 soniyadan keyin qayta urinib ko'ring." : e.message, 1); });
+      },
+      error_callback: function (e) { note("Google oynasi ochilmadi: " + ((e && e.type) || "xato") + ". Brauzer popup'ini ruxsat qiling.", 1); }
+    }).requestAccessToken();
+  };
+})();
+</script>
+</body>
+</html>
