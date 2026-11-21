@@ -9,7 +9,7 @@ window.APP = {
   downloads: {
     android: "https://drive.google.com/file/d/1VpeR-ybMMj687B7DwtogRB2l7c1u5LCY/view?usp=sharing", // APK joylangan post (keyin Play Market havolasi)
     ios: "",                                     // App Store (keyin)
-    windows: "https://github.com/XCoderUzb/AniManxwa-app/releases/download/windows/AniManxwa-Setup.exe", // Windows o'rnatuvchi
+    windows: "https://github.com/XCoderUzb/AniManxwa-app/releases/download/win-12/AniManxwa-1.0.0.exe", // Windows o'rnatuvchi
     other: "https://telegram.me/AniManxwaAppNews" // yangiliklar kanali (kompyuter va iPhone uchun)
   }
 };
