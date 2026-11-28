@@ -47,7 +47,7 @@
     note("");
     google.accounts.oauth2.initTokenClient({
       client_id: A.gclient,
-      scope: "openid email profile https://www.googleapis.com/auth/user.birthday.read",
+      scope: "openid email profile" + (A.birthday === false ? "" : " https://www.googleapis.com/auth/user.birthday.read"),
       callback: function (r) {
         if (!r || !r.access_token) return note("Google ruxsat bermadi: " + ((r && r.error) || "bekor qilindi"), 1);
         $("go").disabled = true; note("Tekshirilmoqda...");

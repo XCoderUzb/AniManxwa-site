@@ -9,6 +9,8 @@
 <script>
 // /REPO/manhwa/123/456/  ->  /REPO/?manhwa=123&chapter=456  (asosiy sahifa shu yerda ishlaydi)
 (function () {
+  var pr = location.pathname.match(/^(.*?)\/profile\/?$/i);
+  if (pr) { location.replace(pr[1] + "/?p=profile"); return; }
   var m = location.pathname.match(/^(.*?)\/(manga|manhwa|manhua|novella)\/([^\/]+)(?:\/(\d+))?\/?$/i);
   if (m) location.replace(m[1] + "/?t=" + m[2].toLowerCase() + "&s=" + m[3] + (m[4] ? "&c=" + m[4] : ""));
   else document.addEventListener("DOMContentLoaded", function () {
